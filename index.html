@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment 5 | JavaScript DOM & Events</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #312e81, #4f46e5);
+            color: white;
+            text-align: center;
+            padding: 38px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin-bottom: 0;
+            color: #e0e7ff;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .experiment {
+            background: white;
+            margin-bottom: 25px;
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .experiment h2 {
+            margin-top: 0;
+            color: #4338ca;
+            font-size: 22px;
+        }
+
+        .description {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin: 12px 0 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #c7d2fe;
+            border-color: #6366f1;
+        }
+
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 11px 20px;
+            margin-top: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3730a3;
+        }
+
+        .result {
+            background: #eef2ff;
+            border-left: 4px solid #6366f1;
+            padding: 14px;
+            margin-top: 18px;
+            border-radius: 6px;
+            overflow-wrap: anywhere;
+        }
+
+        .result p {
+            margin: 5px 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .fruit-garden {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .fruit-row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .fruit {
+            font-size: 30px;
+            padding: 5px;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .coin {
+            font-size: 90px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .coin-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .stat {
+            text-align: center;
+            background: #f5f3ff;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .stat strong {
+            display: block;
+            color: #4338ca;
+            font-size: 25px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .radio-group input {
+            width: auto;
+        }
+
+        footer {
+            text-align: center;
+            background: #1e1b4b;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 23px;
+            }
+
+            .experiment {
+                padding: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Experiment 5: JavaScript DOM & Events</h1>
+    <p>Web Technology Lab — Interactive JavaScript Programs</p>
+</header>
+
+<main class="container">
+
+    <!-- QUESTION 1 -->
+    <section class="experiment">
+        <h2>1. Shortest & Longest Word</h2>
+        <p class="description">
+            Enter a sentence to find the shortest and longest word.
+        </p>
+
+        <label for="sentence">Enter a sentence</label>
+        <input type="text" id="sentence"
+               value="Web Development Tutorial"
+               placeholder="Enter a sentence">
+
+        <button id="findWords">Find Words</button>
+
+        <div class="result" id="wordResult" aria-live="polite">
+            <p>Shortest word: <strong>—</strong></p>
+            <p>Longest word: <strong>—</strong></p>
+        </div>
+    </section>
+
+
+    <!-- QUESTION 2 -->
+    <section class="experiment">
+        <h2>2. BMI Calculator</h2>
+        <p class="description">
+            Calculate your Body Mass Index using your weight and height.
+        </p>
+
+        <div class="form-grid">
+            <div>
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight"
+                       placeholder="e.g. 60" min="0.1" step="any">
+            </div>
+
+            <div>
+                <label for="height">Height (meters)</label>
+                <input type="number" id="height"
+                       placeholder="e.g. 1.70" min="0.1" step="any">
+            </div>
+        </div>
+
+        <button id="calculateBMI">Calculate BMI</button>
+
+        <div class="result" id="bmiResult" aria-live="polite">
+            <p>Your BMI is: <strong id="score">—</strong></p>
+            <p>Your body type is: <strong id="type">—</strong></p>
+        </div>
+    </section>
+
+
+    <!-- QUESTION 3 -->
+    <section class="experiment">
+        <h2>3. Fruit Farm</h2>
+        <p class="description">
+            Enter the number of rows and columns to create a random fruit garden.
+        </p>
+
+        <div class="form-grid">
+            <div>
+                <label for="rows">Rows</label>
+                <input type="number" id="rows"
+                       value="3" min="1" max="15">
+            </div>
+
+            <div>
+                <label for="columns">Columns</label>
+                <input type="number" id="columns"
+                       value="4" min="1" max="15">
+            </div>
+        </div>
+
+        <button id="plantGarden">Plant Garden</button>
+
+        <div class="fruit-garden" id="garden" aria-live="polite">
+            Your fruit garden will appear here.
+        </div>
+    </section>
+
+
+    <!-- QUESTION 4 -->
+    <section class="experiment">
+        <h2>4. Currency Converter</h2>
+        <p class="description">
+            Convert Indian Rupees to US Dollars and vice versa using the
+            conversion rates specified in the lab question.
+        </p>
+
+        <label for="amount">Enter Amount</label>
+        <input type="number" id="amount"
+               placeholder="Enter amount" min="0" step="any">
+
+        <div class="form-grid">
+            <div>
+                <label for="from">From</label>
+                <select id="from">
+                    <option value="INR">Indian Rupee (INR)</option>
+                    <option value="USD">US Dollar (USD)</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="to">To</label>
+                <select id="to">
+                    <option value="USD">US Dollar (USD)</option>
+                    <option value="INR">Indian Rupee (INR)</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="convertCurrency">Calculate</button>
+
+        <div class="result" aria-live="polite">
+            Result: <strong id="currencyResult">—</strong>
+        </div>
+    </section>
+
+
+    <!-- QUESTION 5 -->
+    <section class="experiment">
+        <h2>5. Coin Flip</h2>
+        <p class="description">
+            Flip a coin randomly and keep track of the heads and tails totals.
+        </p>
+
+        <div class="coin" id="coin" aria-label="Coin">🪙</div>
+        <p style="text-align:center">
+            <strong id="coinOutcome">Ready to flip!</strong>
+        </p>
+
+        <div style="text-align:center">
+            <button id="flip">Flip!</button>
+        </div>
+
+        <div class="coin-stats">
+            <div class="stat">
+                Heads Total
+                <strong id="num_heads">0</strong>
+            </div>
+
+            <div class="stat">
+                Tails Total
+                <strong id="num_tails">0</strong>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- QUESTION 6 -->
+    <section class="experiment">
+        <h2>6. Birthday Cake Order</h2>
+        <p class="description">
+            Select the quantity of each cake size and your preferred tip.
+            Tax is 9%, and the tip is calculated after tax.
+        </p>
+
+        <div class="form-grid">
+            <div>
+                <label for="halfKg">½ kg Cakes (₹100 each)</label>
+                <input type="number" id="halfKg" value="0" min="0" max="100"
+                       step="1">
+            </div>
+
+            <div>
+                <label for="oneKg">1 kg Cakes (₹200 each)</label>
+                <input type="number" id="oneKg" value="0" min="0" max="100"
+                       step="1">
+            </div>
+        </div>
+
+        <label for="twoKg">2 kg Cakes (₹400 each)</label>
+        <input type="number" id="twoKg" value="0" min="0" max="100" step="1">
+
+        <label>Select Tip Percentage</label>
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="tip" value="10" checked> 10%
+            </label>
+
+            <label>
+                <input type="radio" name="tip" value="15"> 15%
+            </label>
+
+            <label>
+                <input type="radio" name="tip" value="20"> 20%
+            </label>
+        </div>
+
+        <button id="calculateOrder">Calculate Order</button>
+
+        <div class="result" aria-live="polite">
+            <p>Cake subtotal: <strong id="subtotal">₹0.00</strong></p>
+            <p>Tax (9%): <strong id="tax">₹0.00</strong></p>
+            <p>Tip: <strong id="tipAmount">₹0.00</strong></p>
+            <p>Total cost of order:</p>
+            <strong id="price" style="font-size:25px">₹0.00</strong>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>JavaScript DOM & Events | Web Technology Lab</p>
+    <p>Experiment 5</p>
+</footer>
+
+
+<script>
+    // 1. SHORTEST AND LONGEST WORD
+
+    document.getElementById("findWords").addEventListener("click", function () {
+        var sentence = document.getElementById("sentence").value.trim();
+        var result = document.getElementById("wordResult");
+
+        if (sentence === "") {
+            result.textContent = "Please enter a sentence.";
+            return;
+        }
+
+        var words = sentence.split(/\s+/);
+        var shortest = words[0];
+        var longest = words[0];
+
+        for (var i = 1; i < words.length; i++) {
+            if (words[i].length < shortest.length) {
+                shortest = words[i];
+            }
+
+            if (words[i].length > longest.length) {
+                longest = words[i];
+            }
+        }
+
+        result.replaceChildren();
+
+        var p1 = document.createElement("p");
+        p1.textContent = "Shortest word: " + shortest;
+
+        var p2 = document.createElement("p");
+        p2.textContent = "Longest word: " + longest;
+
+        result.append(p1, p2);
+    });
+
+
+    // 2. BMI CALCULATOR
+
+    document.getElementById("calculateBMI").addEventListener("click", function () {
+        var weight = parseFloat(document.getElementById("weight").value);
+        var height = parseFloat(document.getElementById("height").value);
+
+        if (!Number.isFinite(weight) || !Number.isFinite(height) ||
+            weight <= 0 || height <= 0) {
+            alert("Please enter a valid weight and height.");
+            return;
+        }
+
+        var bmi = weight / (height * height);
+        var type;
+
+        if (bmi < 18) {
+            type = "Underweight";
+        } else if (bmi < 25) {
+            type = "Normal";
+        } else if (bmi <= 30) {
+            type = "Overweight";
+        } else {
+            type = "Obese";
+        }
+
+        document.getElementById("score").textContent = bmi.toFixed(2);
+        document.getElementById("type").textContent = type;
+    });
+
+
+    // 3. FRUIT FARM
+
+    document.getElementById("plantGarden").addEventListener("click", function () {
+        var rows = parseInt(document.getElementById("rows").value, 10);
+        var columns = parseInt(document.getElementById("columns").value, 10);
+        var garden = document.getElementById("garden");
+
+        if (!Number.isInteger(rows) || !Number.isInteger(columns) ||
+            rows < 1 || columns < 1 || rows > 15 || columns > 15) {
+            alert("Enter rows and columns between 1 and 15.");
+            return;
+        }
+
+        garden.replaceChildren();
+
+        var fruits = ["🍎", "🍊"];
+
+        for (var i = 0; i < rows; i++) {
+            var row = document.createElement("div");
+            row.className = "fruit-row";
+
+            for (var j = 0; j < columns; j++) {
+                var number = Math.floor(Math.random() * 2);
+                var fruit = document.createElement("span");
+
+                fruit.className = "fruit";
+                fruit.textContent = fruits[number];
+
+                row.appendChild(fruit);
+            }
+
+            garden.appendChild(row);
+        }
+    });
+
+
+    // 4. CURRENCY CONVERTER
+
+    document.getElementById("convertCurrency").addEventListener("click", function () {
+        var amount = parseFloat(document.getElementById("amount").value);
+        var from = document.getElementById("from").value;
+        var to = document.getElementById("to").value;
+
+        if (!Number.isFinite(amount) || amount < 0) {
+            alert("Please enter a valid amount.");
+            return;
+        }
+
+        var result;
+
+        if (from === "INR" && to === "USD") {
+            result = amount * 0.015;
+        } else if (from === "USD" && to === "INR") {
+            result = amount * 67.12;
+        } else {
+            result = amount;
+        }
+
+        document.getElementById("currencyResult").textContent =
+            result.toFixed(2) + " " + to;
+    });
+
+
+    // 5. COIN FLIP
+
+    var heads = 0;
+    var tails = 0;
+
+    document.getElementById("flip").addEventListener("click", function () {
+        var number = Math.floor(Math.random() * 2);
+
+        if (number === 0) {
+            heads++;
+            document.getElementById("coinOutcome").textContent = "Heads!";
+            document.getElementById("coin").textContent = "🪙";
+        } else {
+            tails++;
+            document.getElementById("coinOutcome").textContent = "Tails!";
+            document.getElementById("coin").textContent = "🪙";
+        }
+
+        document.getElementById("num_heads").textContent = heads;
+        document.getElementById("num_tails").textContent = tails;
+    });
+
+
+    // 6. BIRTHDAY CAKE ORDER
+
+    document.getElementById("calculateOrder").addEventListener("click", function () {
+        var halfKg = Number(document.getElementById("halfKg").value);
+        var oneKg = Number(document.getElementById("oneKg").value);
+        var twoKg = Number(document.getElementById("twoKg").value);
+
+        var quantities = [halfKg, oneKg, twoKg];
+
+        for (var i = 0; i < quantities.length; i++) {
+            if (!Number.isInteger(quantities[i]) ||
+                quantities[i] < 0 || quantities[i] > 100) {
+                alert("Enter a whole number between 0 and 100 for each cake quantity.");
+                return;
+            }
+        }
+
+        var subtotal = (halfKg * 100) + (oneKg * 200) + (twoKg * 400);
+
+        var selectedTip = document.querySelector('input[name="tip"]:checked');
+        var tipPercent = Number(selectedTip.value);
+
+        var tax = subtotal * 0.09;
+        var afterTax = subtotal + tax;
+        var tipAmount = afterTax * tipPercent / 100;
+        var total = afterTax + tipAmount;
+
+        document.getElementById("subtotal").textContent =
+            "₹" + subtotal.toFixed(2);
+
+        document.getElementById("tax").textContent =
+            "₹" + tax.toFixed(2);
+
+        document.getElementById("tipAmount").textContent =
+            "₹" + tipAmount.toFixed(2);
+
+        document.getElementById("price").textContent =
+            "₹" + total.toFixed(2);
+    });
+</script>
+
+</body>
+</html>
